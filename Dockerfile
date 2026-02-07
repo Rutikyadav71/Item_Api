@@ -1,17 +1,13 @@
-# Use Java 17 base image
-FROM eclipse-temurin:17-jdk
-
-# Set working directory
+# Build stage
+FROM eclipse-temurin:17-jdk AS build
 WORKDIR /app
-
-# Copy Maven wrapper + project files
 COPY . .
-
-# Build the application inside Docker
+RUN chmod +x mvnw
 RUN ./mvnw clean package -DskipTests
 
-# Run the jar file
-CMD ["java", "-jar", "target/app.jar"]
-
-# Expose port used by Spring Boot
+# Run stage
+FROM eclipse-temurin:17-jdk
+WORKDIR /app
+COPY --from=build /app/target/app.jar app.jar
+CMD ["java", "-jar", "app.jar"]
 EXPOSE 8080
