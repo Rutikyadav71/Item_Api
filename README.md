@@ -103,7 +103,9 @@ steps:
 ---
 ## deployment:
 deployed on platforms:
-- Render : 
+- Render : https://item-api-3b64.onrender.com/
+- Note: Render free hosting may sleep after inactivity. First request may take ~30 seconds.
+
 
 ---
 ## author:
