@@ -2,6 +2,7 @@ package com.rutik.itemapi.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,6 +44,15 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(
                 "Internal Server Error: " + ex.getMessage(),
                 HttpStatus.INTERNAL_SERVER_ERROR
+        );
+    }
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    public ResponseEntity<String> handleMethodNotSupported(
+            HttpRequestMethodNotSupportedException ex) {
+
+        return new ResponseEntity<>(
+                "This endpoint does not support this HTTP method. Please use the correct method.",
+                HttpStatus.METHOD_NOT_ALLOWED
         );
     }
 }

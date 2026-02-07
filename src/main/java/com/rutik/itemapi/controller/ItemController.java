@@ -60,4 +60,32 @@ public class ItemController {
 
         return ResponseEntity.ok("Item deleted successfully!");
     }
+
+    // Handle browser GET request for /add
+    @GetMapping("/add")
+    public String addInfo() {
+        return """
+            <html>
+            <body style="font-family: Arial; padding:20px;">
+                <h2>POST Endpoint Only ⚠️</h2>
+                <p>This endpoint <b>/api/items/add</b> only supports <b>POST</b> requests.</p>
+
+                <p>To add a new item, please use Postman or cURL.</p>
+
+                <h3>Example JSON Body:</h3>
+                <pre>
+                    {
+                        "name": "Mobile",
+                        "description": "Gaming Mobile",
+                        "price": 45000
+                    }
+                </pre>
+
+                <p>Try GET endpoint in browser:</p>
+                <a href="/api/items">View All Items</a>
+            </body>
+            </html>
+            """;
+    }
+
 }
