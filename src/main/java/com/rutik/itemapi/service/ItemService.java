@@ -46,15 +46,33 @@ public class ItemService {
         return item;
     }
 
+    // Update item
+    public Item updateItem(int id, Item item) {
+
+        if (item.getId() != null) {
+            throw new InvalidRequestException(
+                    "ID must not be provided in request body. Use path variable."
+            );
+        }
+
+        Item updatedItem = repo.updateItem(id, item);
+
+        if (updatedItem == null) {
+            throw new ItemNotFoundException("Item not found with ID: " + id);
+        }
+
+        return updatedItem;
+    }
+
     // Delete item
-    public String deleteItem(int id) {
+    public void deleteItem(int id) {
 
         boolean deleted = repo.deleteItem(id);
 
         if (!deleted) {
-            throw new ItemNotFoundException("Cannot delete. Item not found with ID: " + id);
+            throw new ItemNotFoundException(
+                    "Cannot delete. Item not found with ID: " + id
+            );
         }
-
-        return "Item deleted successfully!";
     }
 }

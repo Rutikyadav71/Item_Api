@@ -11,19 +11,19 @@ import java.util.Map;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(InvalidRequestException.class)
-    public ResponseEntity<String> handleInvalidRequest(InvalidRequestException ex) {
-        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
-    }
-
-
-    // Handle Item Not Found
+    // Item Not Found (GET, PUT, DELETE)
     @ExceptionHandler(ItemNotFoundException.class)
     public ResponseEntity<String> handleItemNotFound(ItemNotFoundException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 
-    // Handle Validation Errors
+    // Invalid Request (ID provided in POST/PUT)
+    @ExceptionHandler(InvalidRequestException.class)
+    public ResponseEntity<String> handleInvalidRequest(InvalidRequestException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    // Validation Errors (name empty, price negative)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, String>> handleValidationErrors(
             MethodArgumentNotValidException ex) {
@@ -37,10 +37,12 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
 
-    // Handle Generic Errors
+    // Generic Errors
     @ExceptionHandler(Exception.class)
     public ResponseEntity<String> handleOtherErrors(Exception ex) {
-        return new ResponseEntity<>("Error: " + ex.getMessage(),
-                HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(
+                "Internal Server Error: " + ex.getMessage(),
+                HttpStatus.INTERNAL_SERVER_ERROR
+        );
     }
 }

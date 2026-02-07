@@ -3,6 +3,8 @@ package com.rutik.itemapi.controller;
 import com.rutik.itemapi.model.Item;
 import com.rutik.itemapi.service.ItemService;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,26 +21,43 @@ public class ItemController {
 
     // Add new item
     @PostMapping("/add")
-    public String addItem(@Valid @RequestBody Item item) {
+    public ResponseEntity<String> addItem(@Valid @RequestBody Item item) {
         service.addItem(item);
-        return "Item added successfully!";
+
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body("Item added successfully!");
     }
 
     // Get all items
     @GetMapping
-    public List<Item> getAllItems() {
-        return service.getAllItems();
+    public ResponseEntity<List<Item>> getAllItems() {
+        return ResponseEntity.ok(service.getAllItems());
     }
 
     // Get item by ID
     @GetMapping("/{id}")
-    public Item getItemById(@PathVariable int id) {
-        return service.getItemById(id);
+    public ResponseEntity<Item> getItemById(@PathVariable int id) {
+        return ResponseEntity.ok(service.getItemById(id));
     }
 
-    // Delete item by ID
+    // Update item by id
+    @PutMapping("/{id}")
+    public ResponseEntity<String> updateItem(
+            @PathVariable int id,
+            @Valid @RequestBody Item item) {
+
+        service.updateItem(id, item);
+
+        return ResponseEntity.ok("Item updated successfully!");
+    }
+
+    // Delete item by id
     @DeleteMapping("/{id}")
-    public String deleteItem(@PathVariable int id) {
-        return service.deleteItem(id);
+    public ResponseEntity<String> deleteItem(@PathVariable int id) {
+
+        service.deleteItem(id);
+
+        return ResponseEntity.ok("Item deleted successfully!");
     }
 }

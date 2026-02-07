@@ -11,14 +11,12 @@ public class ItemRepository {
 
     private List<Item> items = new ArrayList<>();
 
-    private int currentId = 1; //Auto Increment Counter
+    private int currentId = 1; // Auto Increment Counter
 
     // Add item with auto ID
     public Item addItem(Item item) {
-
         item.setId(currentId++);
         items.add(item);
-
         return item;
     }
 
@@ -35,8 +33,26 @@ public class ItemRepository {
                 .orElse(null);
     }
 
+    // Update item
+    public Item updateItem(int id, Item updatedItem) {
+
+        Item existingItem = getItemById(id);
+
+        if (existingItem == null) {
+            return null;
+        }
+
+        existingItem.setName(updatedItem.getName());
+        existingItem.setDescription(updatedItem.getDescription());
+        existingItem.setPrice(updatedItem.getPrice());
+
+        return existingItem;
+    }
+
     // Delete item by ID
     public boolean deleteItem(int id) {
-        return items.removeIf(item -> item.getId() == id);
+        return items.removeIf(item ->
+                item.getId() != null && item.getId().equals(id)
+        );
     }
 }
